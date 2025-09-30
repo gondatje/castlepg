@@ -5,54 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Castle Hot Springs | Packages Guide</title>
 <style>
-  :root{
-    /* Light */
-    --bg:#f7f7fb; --panel:#ffffff; --card:#ffffff; --ink:#0b0b10; --muted:rgba(0,0,0,.62);
-    --ring:rgba(0,0,0,.12); --border:rgba(0,0,0,.12); --chip:rgba(10,10,15,.05);
-    --accent:#0ea5e9; --accent2:#10b981; --shadow:0 18px 50px -24px rgba(0,0,0,.35);
-    --pill:rgba(10,10,15,.06);
+  /* ——— THEME ——— */
+  :root{ /* Light (inspired by CHS desert palette) */
+    --bg:#f6f5f2;        /* sand wash */
+    --panel:#ffffff;     /* clean surface */
+    --card:#ffffff;      /* card bg */
+    --ink:#1a1a1a;       /* primary text */
+    --muted:rgba(0,0,0,.62);
+    --ring:rgba(15,35,35,.12);
+    --border:rgba(15,35,35,.14);
+    --chip:rgba(10,10,15,.05);
+    --brand:#17423a;     /* deep desert green */
+    --brand-accent:#c7b892; /* sandstone gold */
+    --shadow:0 18px 50px -24px rgba(0,0,0,.28);
   }
   html[data-theme="dark"]{
-    --bg:#0b0b0f; --panel:#111117; --card:#14141c; --ink:#ffffff; --muted:rgba(255,255,255,.70);
-    --ring:rgba(255,255,255,.18); --border:rgba(255,255,255,.12); --chip:rgba(255,255,255,.08);
-    --accent:#7ec3ff; --accent2:#93f5c9; --shadow:0 22px 60px -24px rgba(0,0,0,.65);
-    --pill:rgba(255,255,255,.12);
+    --bg:#0e0f10;
+    --panel:#101315;
+    --card:#12161a;
+    --ink:#f6f7f8;
+    --muted:rgba(255,255,255,.72);
+    --ring:rgba(243,247,248,.18);
+    --border:rgba(243,247,248,.12);
+    --chip:rgba(255,255,255,.08);
+    --brand:#9ed0bf;     /* softened brand for dark */
+    --brand-accent:#d9caa7;
+    --shadow:0 22px 60px -26px rgba(0,0,0,.55);
   }
-  *{box-sizing:border-box} html,body{height:100%}
-  body{margin:0;font:16px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,Apple Color Emoji,Segoe UI Emoji; color:var(--ink); background:var(--bg);} 
+
+  /* ——— BASE ——— */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font:15px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:var(--ink); background:var(--bg);} 
   .wrap{max-width:1140px; margin:0 auto; padding:16px}
-  .top{position:sticky; top:0; z-index:5; backdrop-filter:saturate(1.2) blur(10px); background:color-mix(in oklab, var(--bg) 85%, transparent); border-bottom:1px solid var(--border)}
+  .top{position:sticky; top:0; z-index:5; backdrop-filter:saturate(1.1) blur(10px); background:color-mix(in oklab, var(--bg) 88%, transparent); border-bottom:1px solid var(--border)}
   h1{font-size:20px; font-weight:800; margin:0; letter-spacing:.2px; display:flex; align-items:center; gap:10px}
-  .brand{background:linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent}
-  .title{color:var(--ink); opacity:.82}
+  .brand{color:var(--brand)}
+  .title{color:var(--brand-accent)}
   .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
   .grow{flex:1}
   input[type="text"]{width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--chip); color:var(--ink); outline:none}
   input[type="text"]:focus{box-shadow:0 0 0 3px var(--ring)}
-  .chip{padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--chip); color:var(--ink); cursor:pointer; user-select:none}
-  .chip.active{background:color-mix(in oklab, var(--accent) 18%, var(--chip)); border-color:color-mix(in oklab, var(--accent) 40%, var(--border));}
-  .cards{display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px; padding:20px 0 28px}
-  .card{border:1px solid var(--border); background:var(--card); border-radius:20px; padding:16px; box-shadow:var(--shadow); position:relative}
-  .badge{display:inline-flex; align-items:center; gap:6px; font-size:11px; text-transform:uppercase; letter-spacing:.12em; padding:4px 10px; border-radius:99px; border:1px solid var(--border); background:var(--pill); color:var(--muted)}
-  .pill{display:inline-block; font-size:11px; padding:4px 8px; border-radius:999px; background:var(--pill); border:1px solid var(--border); margin:2px 6px 0 0}
-  .kv{display:grid; grid-template-columns:140px 1fr; gap:8px; row-gap:6px}
-  .kv .label{color:var(--muted); font-size:12px}
-  .bullets{margin:8px 0 0 0; padding-left:18px}
-  .bullets li{margin:6px 0}
-  .btn{border:1px solid var(--border); background:var(--chip); color:var(--ink); padding:6px 12px; border-radius:10px; cursor:pointer}
-  .btn:hover{background:color-mix(in oklab, var(--accent) 10%, var(--chip))}
-  .btn.small{font-size:12px; padding:5px 10px; border-radius:999px}
-  .compareBar{position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:min(1120px, 94vw); background:color-mix(in oklab, var(--panel) 96%, transparent); border:1px solid var(--border); border-radius:20px; padding:12px; box-shadow:var(--shadow)}
-  .cmpGrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px}
-  .cmpCard{border:1px solid var(--border); border-radius:14px; padding:10px; background:var(--card)}
-  a.link{color:var(--accent); text-decoration:none}
-  a.link:hover{text-decoration:underline}
-  .muted{color:var(--muted)}
   .seg{display:inline-flex; background:var(--chip); border:1px solid var(--border); border-radius:12px; padding:4px}
   .seg button{padding:6px 10px; border-radius:8px; border:0; background:transparent; color:var(--ink); cursor:pointer}
-  .seg button.active{background:color-mix(in oklab, var(--accent) 16%, var(--chip));}
-  .mode{border-radius:999px; border:1px solid var(--border); background:var(--chip); padding:6px 10px; display:flex; align-items:center; gap:10px; cursor:pointer}
+  .seg button.active{background:color-mix(in oklab, var(--brand) 16%, var(--chip)); color:var(--ink)}
+  .mode{border-radius:999px; border:1px solid var(--border); background:var(--chip); padding:6px 10px; display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none}
+  .mode .sym{font-family: ui-sans-serif, system-ui; font-weight:700; letter-spacing:.5px}
   .hide{display:none}
+
+  /* ——— CARDS ——— */
+  .cards{display:grid; grid-template-columns:repeat(auto-fill, minmax(330px, 1fr)); gap:16px; padding:18px 0 88px}
+  .card{border:1px solid var(--border); background:var(--card); border-radius:18px; padding:14px; box-shadow:var(--shadow); position:relative; display:grid; grid-template-rows:auto auto 96px 64px 52px 40px; gap:10px; min-height:420px}
+  /* rows: header, meta pills, highlights(96px), pricing(64px), restrictions(52px), link(40px) */
+
+  .rowhead{display:flex; gap:10px}
+  .name{font-weight:800; font-size:16px; line-height:1.2; flex:1}
+  .btn{border:1px solid var(--border); background:var(--chip); color:var(--ink); padding:6px 12px; border-radius:10px; cursor:pointer; white-space:nowrap}
+  .btn.small{font-size:12px; padding:5px 10px; border-radius:999px}
+
+  .pills{display:flex; flex-wrap:wrap; gap:6px; align-content:flex-start; overflow:hidden; max-height:32px}
+  .pill{display:inline-flex; align-items:center; gap:6px; font-size:11px; padding:4px 8px; border-radius:999px; background:color-mix(in oklab, var(--brand) 10%, var(--chip)); border:1px solid var(--border)}
+
+  .kv{display:grid; grid-template-columns:120px 1fr; gap:8px; row-gap:6px}
+  .kv .label{color:var(--muted); font-size:12px}
+
+  .bullets{margin:0; padding-left:16px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical}
+  .bullets li{margin:4px 0; font-size:13px}
+
+  .clamp2{overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical}
+  .clamp3{overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical}
+
+  .badge{display:inline-flex; align-items:center; gap:6px; font-size:11px; text-transform:uppercase; letter-spacing:.12em; padding:4px 10px; border-radius:99px; border:1px solid var(--border); background:var(--chip); color:var(--muted)}
+
+  .linkRow{display:flex; align-items:center; justify-content:flex-end}
+  a.link{color:var(--brand); text-decoration:none; font-weight:600}
+  a.link:hover{text-decoration:underline}
+
+  .compareBar{position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:min(1120px, 94vw); background:color-mix(in oklab, var(--panel) 96%, transparent); border:1px solid var(--border); border-radius:18px; padding:12px; box-shadow:var(--shadow)}
+  .cmpGrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px}
+  .cmpCard{border:1px solid var(--border); border-radius:14px; padding:10px; background:var(--card)}
 </style>
 </head>
 <body>
@@ -65,12 +96,12 @@
         </h1>
         <div class="grow"></div>
         <div class="mode" id="modeToggle" title="Toggle light/dark">
-          <span id="sun">☀️</span>
-          <span id="moon" class="hide">🌙</span>
+          <span class="sym" id="sun">☀︎</span>
+          <span class="sym hide" id="moon">☾</span>
         </div>
       </div>
       <div class="row" style="padding:0 0 12px 0">
-        <input id="q" type="text" placeholder="Whatchu lookin for..?" />
+        <input id="q" class="grow" type="text" placeholder="Search: inclusions, credits, rules, Watsu, helicopter, AZ resident…" />
         <div class="seg" id="categorySeg">
           <button data-cat="all" class="active">All</button>
           <button data-cat="wellness">Wellness</button>
@@ -78,19 +109,14 @@
           <button data-cat="culinary">Culinary & Wine</button>
           <button data-cat="residents">Residents</button>
         </div>
-        <div id="tagsRow" class="row" style="flex-wrap:wrap">
-          <button class="chip" data-flag="credit">Has Credit</button>
-          <button class="chip" data-flag="water">Water Therapy</button>
-          <button class="chip" data-flag="flight">Helicopter</button>
-          <button class="chip" data-flag="datewindow">Has Date Window</button>
-          <button class="chip" data-flag="advance">Advance Booking</button>
-        </div>
       </div>
     </div>
   </div>
+
   <div class="wrap">
     <div id="cards" class="cards"></div>
   </div>
+
   <div id="compare" class="compareBar" style="display:none">
     <div class="row" style="margin-bottom:8px">
       <strong>Compare (<span id="cmpCount">0</span>/3)</strong>
@@ -101,37 +127,35 @@
   </div>
 
 <script>
-// --- DATA ---------------------------------------------------------------
+// ——— DATA ———
 const PACKAGES = [
-  {id:"intentional-wellness", name:"Intentional Wellness", category:"wellness", status:"active", minNights:3, advanceBookingDays:14, pricingNote:"Package price based on 2 people; room rate separate unless otherwise noted.", highlights:["$255 massage credit per person","2 hours per person from Intentional Wellness Menu","Post-stay guidance to continue routine"], features:{credit:true, water:false, flight:false, datewindow:false, advance:true}, restrictions:["3-night minimum","Book at least 14 days in advance","Limited availability"], url:"https://www.castlehotsprings.com/intentional-wellness-package/"},
-  {id:"water-wellness", name:"Water Wellness (Wellness Through Water)", category:"wellness", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Package price based on 2 people.", highlights:["One 60-minute Watsu per person","One 60-minute Zen Soaking Secrets per reservation","Mindful soaking & contrast bathing coaching"], features:{credit:false, water:true, flight:false, datewindow:false, advance:false}, restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/wellness-through-water-package/"},
-  {id:"adventure", name:"Adventure Experience", category:"adventure", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Based on 2 people, per stay.", highlights:["3-hour Crater Canyon per person","120-minute guided e‑bike per person","Gear provided"], features:{credit:false, water:false, flight:false, datewindow:false, advance:false}, restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/castle-adventure-package/"},
-  {id:"soak-slumber", name:"Soak & Slumber", category:"wellness", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Package price based on 2 people.", highlights:["Divine Slumber session","Private guided hike","Massage credit","Curated sleep kit"], features:{credit:true, water:false, flight:false, datewindow:false, advance:false}, restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/soak-and-slumber-package/"},
-  {id:"sonoran-oasis", name:"Sonoran Oasis Renewal", category:"wellness", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Package price based on 2 people.", highlights:["120‑minute Sonoran Desert Transformation","$50 per person resort credit","Turquoise Sage Travel Kit"], features:{credit:true, water:false, flight:false, datewindow:false, advance:false}, restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/desert-spa-package/"},
-  {id:"epicurean-escape", name:"Sonoran Epicurean Escape", category:"culinary", status:"active", minNights:4, advanceBookingDays:0, pricingNote:"+$500 per person, per stay (excludes accommodations). Limited dates.", highlights:["Seasonal flavor & farm tour","Communal farm dinners","Wine & charcuterie workshop","Margarita making contest","Herbal tea & Prep & Plate classes","Sommelier’s Table pairings","Mesquite & Mezcal dinner"], features:{credit:false, water:false, flight:false, datewindow:true, advance:false}, restrictions:["4-night experience","Select dates only"], url:"https://www.castlehotsprings.com/stay/events/sonoran-epicurean-escape/"},
-  {id:"vines-vistas", name:"Vines & Vistas (Sedona Helicopter + D.A. Ranch)", category:"culinary", status:"active", minNights:4, advanceBookingDays:21, pricingNote:"$3,245 for 2 guests; +$125 per additional guest, plus room rate.", highlights:["Helicopter over Sedona red rocks","Private vineyard tour & tasting at D.A. Ranch","$50 per person resort credit","Optional gift set"], features:{credit:true, water:false, flight:true, datewindow:false, advance:true}, restrictions:["4-night minimum","21‑day advance","21+ for tastings","Not combinable with other offers"], url:"https://www.castlehotsprings.com/promotions/wine-tour/"},
-  {id:"local-legends", name:"Local Legends (AZ Residents)", category:"residents", status:"active", minNights:2, advanceBookingDays:0, pricingNote:"$150 nightly resort credit per room; valid seasonal windows; AZ ID required.", highlights:["$150 nightly resort credit (per room)","Flexible arrival during windows","Credits stack by length of stay"], features:{credit:true, water:false, flight:false, datewindow:true, advance:false}, restrictions:["2-night minimum","Specific 2025–2026 windows","Not combinable with packages/offers","Credit not usable at Harvest/Bar 1896/Boutique/vendors/transport"], url:"https://www.castlehotsprings.com/promotions/local-legends-offer/"},
-  {id:"desert-vines", name:"Desert Vines (Cancelled)", category:"culinary", status:"cancelled", minNights:null, advanceBookingDays:null, pricingNote:"No longer offered.", highlights:["—"], features:{credit:false, water:false, flight:false, datewindow:false, advance:false}, restrictions:["Cancelled"], url:null},
+  {id:"intentional-wellness", name:"Intentional Wellness", category:"wellness", status:"active", minNights:3, advanceBookingDays:14, pricingNote:"Price based on two guests; room rate separate.", highlights:["$255 massage credit per person","2 hours per person from Intentional Wellness Menu","Post-stay guidance"], restrictions:["3-night minimum","14+ day advance"], url:"https://www.castlehotsprings.com/intentional-wellness-package/"},
+  {id:"water-wellness", name:"Water Wellness (Wellness Through Water)", category:"wellness", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Price based on two guests.", highlights:["One 60-minute Watsu per person","One 60-minute Zen Soaking Secrets (per reservation)","Mindful soaking & contrast bathing coaching"], restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/wellness-through-water-package/"},
+  {id:"adventure", name:"Adventure Experience", category:"adventure", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Based on two guests, per stay.", highlights:["3-hour Crater Canyon per person","120-minute guided e‑bike per person","Gear provided"], restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/castle-adventure-package/"},
+  {id:"soak-slumber", name:"Soak & Slumber", category:"wellness", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Price based on two guests.", highlights:["Divine Slumber session","Private guided hike","Massage credit","Curated sleep kit"], restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/soak-and-slumber-package/"},
+  {id:"sonoran-oasis", name:"Sonoran Oasis Renewal", category:"wellness", status:"active", minNights:3, advanceBookingDays:0, pricingNote:"Price based on two guests.", highlights:["120‑minute Sonoran Desert Transformation","$50 per person resort credit","Turquoise Sage Travel Kit"], restrictions:["3-night minimum"], url:"https://www.castlehotsprings.com/promotions/desert-spa-package/"},
+  {id:"epicurean-escape", name:"Sonoran Epicurean Escape", category:"culinary", status:"active", minNights:4, advanceBookingDays:0, pricingNote:"+$500 per person, per stay (excludes accommodations). Select dates.", highlights:["Seasonal flavor & farm tour","Communal farm dinners","Workshops & pairings"], restrictions:["4-night experience","Select dates only"], url:"https://www.castlehotsprings.com/stay/events/sonoran-epicurean-escape/"},
+  {id:"vines-vistas", name:"Vines & Vistas (Sedona Helicopter + D.A. Ranch)", category:"culinary", status:"active", minNights:4, advanceBookingDays:21, pricingNote:"$3,245 for 2 guests; +$125/additional guest, plus room rate.", highlights:["Helicopter over Sedona red rocks","Private vineyard tour & tasting at D.A. Ranch","$50 per person resort credit"], restrictions:["4-night minimum","21‑day advance","21+ tastings","Not combinable"], url:"https://www.castlehotsprings.com/promotions/wine-tour/"},
+  {id:"local-legends", name:"Local Legends (AZ Residents)", category:"residents", status:"active", minNights:2, advanceBookingDays:0, pricingNote:"$150 nightly resort credit per room; seasonal windows; AZ ID required.", highlights:["$150 nightly resort credit (per room)","Flexible arrivals during windows","Credits stack by length of stay"], restrictions:["2-night minimum","Specific 2025–2026 windows","Not combinable","Credit not usable at Harvest/Bar 1896/Boutique/vendors/transport"], url:"https://www.castlehotsprings.com/promotions/local-legends-offer/"},
+  {id:"desert-vines", name:"Desert Vines (Cancelled)", category:"culinary", status:"cancelled", minNights:null, advanceBookingDays:null, pricingNote:"No longer offered.", highlights:["—"], restrictions:["Cancelled"], url:null},
 ];
 
-// --- STATE --------------------------------------------------------------
-const state = {q:"", category:"all", flags:new Set(), compare:[], theme:'light'};
+// ——— STATE ———
+const state = {q:"", category:"all", compare:[], theme:'light'};
 const $ = (s)=>document.querySelector(s);
 
-// --- MODE TOGGLE --------------------------------------------------------
-const modeBtn = $('#modeToggle');
-modeBtn.onclick = ()=>{
+// ——— MODE TOGGLE ———
+$('#modeToggle').onclick = ()=>{
   state.theme = state.theme==='light'? 'dark':'light';
   document.documentElement.setAttribute('data-theme', state.theme);
   $('#sun').classList.toggle('hide', state.theme!=='light');
   $('#moon').classList.toggle('hide', state.theme!=='dark');
 };
 
-// --- FILTERING ----------------------------------------------------------
+// ——— FILTERING ———
 function filterPackages(){
   return PACKAGES.filter(p=>{
     if(state.category!=='all' && p.category!==state.category) return false;
-    for(const f of state.flags){ if(!p.features[f]) return false; }
     if(state.q){
       const hay=(p.name+' '+(p.highlights||[]).join(' ')+' '+(p.restrictions||[]).join(' ')+' '+(p.pricingNote||'')).toLowerCase();
       if(!hay.includes(state.q.toLowerCase())) return false;
@@ -140,42 +164,18 @@ function filterPackages(){
   });
 }
 
-// --- RENDER TAGS/SEG ---------------------------------------------------
-function bindFilters(){
-  // category segmented buttons
-  document.querySelectorAll('#categorySeg [data-cat]').forEach(b=>{
-    b.onclick = ()=>{
-      document.querySelectorAll('#categorySeg button').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      state.category = b.getAttribute('data-cat');
-      render();
-    };
-  });
-  // flags
-  document.querySelectorAll('[data-flag]').forEach(b=>{
-    b.onclick = ()=>{ const k=b.getAttribute('data-flag'); state.flags.has(k)? state.flags.delete(k): state.flags.add(k); b.classList.toggle('active'); render(); };
-  });
-  // search
-  $('#q').addEventListener('input', e=>{ state.q = e.target.value; render(); });
-}
-
-// --- UTILITIES ----------------------------------------------------------
-function tagPills(p){
+// ——— HELPERS ———
+function makePills(p){
   const pills = [];
-  if(p.features.credit) pills.push('Credit');
-  if(p.features.water) pills.push('Water therapy');
-  if(p.features.flight) pills.push('Helicopter');
-  if(p.features.datewindow) pills.push('Date window');
-  if(p.advanceBookingDays) pills.push(p.advanceBookingDays+ 'd advance');
-  pills.push((p.minNights??'—')+ ' night min');
+  if(p.minNights) pills.push(`${p.minNights} night min`);
+  if(p.advanceBookingDays) pills.push(`${p.advanceBookingDays}d advance`);
   return pills.map(t=>`<span class="pill">${t}</span>`).join('');
 }
-
-function keyRow(label, value){
-  return `<div class="kv"><div class="label">${label}</div><div>${value||'—'}</div></div>`;
+function keyRow(label, value, clamp=false){
+  return `<div class="kv"><div class="label">${label}</div><div class="${clamp?'clamp2':''}" title="${(value||'').replace(/"/g,'\"')}">${value||'—'}</div></div>`;
 }
 
-// --- CARDS --------------------------------------------------------------
+// ——— RENDER ———
 function renderCards(){
   const list = filterPackages();
   const el = $('#cards');
@@ -184,27 +184,31 @@ function renderCards(){
     const c = document.createElement('div');
     c.className = 'card';
     c.innerHTML = `
-      <div class="row" style="align-items:flex-start; margin-bottom:6px">
-        <div class="grow">
-          <div style="font-weight:800; font-size:16px">${p.name}</div>
-          <div style="margin-top:8px">${tagPills(p)}</div>
-        </div>
+      <div class="rowhead">
+        <div class="name">${p.name}</div>
         <button class="btn small" data-cmp="${p.id}">${state.compare.includes(p.id)?'Selected':'Compare'}</button>
       </div>
-      <div class="kv">
-        ${keyRow('Pricing', p.pricingNote)}
-        ${p.restrictions && p.restrictions.length ? keyRow('Restrictions', p.restrictions.join(' • ')) : ''}
+      <div class="pills">${makePills(p)}</div>
+
+      <div>
+        <div class="kv">
+          <div class="label">Highlights</div>
+          <div>
+            <ul class="bullets">${p.highlights.map(h=>`<li>${h}</li>`).join('')}</ul>
+          </div>
+        </div>
       </div>
-      <div style="margin-top:8px">
-        <div class="muted" style="font-size:12px; text-transform:uppercase; letter-spacing:.08em">Highlights</div>
-        <ul class="bullets">${p.highlights.map(h=>`<li>${h}</li>`).join('')}</ul>
+
+      ${keyRow('Pricing', p.pricingNote, true)}
+      ${keyRow('Restrictions', (p.restrictions||[]).join(' • '), true)}
+
+      <div class="linkRow">
+        ${p.url? `<a class="link" href="${p.url}" target="_blank" rel="noreferrer">Open official page</a>` : `<span class="badge">${p.status}</span>`}
       </div>
-      ${p.url? `<div style="margin-top:12px"><a class="link" href="${p.url}" target="_blank" rel="noreferrer">Open official page</a></div>`:''}
-      ${p.status!=="active"? `<div style="margin-top:10px"><span class="badge">${p.status}</span></div>`:''}
     `;
     el.appendChild(c);
   });
-  // attach compare buttons
+
   document.querySelectorAll('[data-cmp]').forEach(btn=>{
     btn.onclick = ()=>{
       const id = btn.getAttribute('data-cmp');
@@ -215,7 +219,6 @@ function renderCards(){
   });
 }
 
-// --- COMPARE ------------------------------------------------------------
 function renderCompare(){
   const bar = $('#compare'); const grid = $('#cmpGrid'); const count = $('#cmpCount');
   if(!state.compare.length){ bar.style.display='none'; return; }
@@ -237,7 +240,18 @@ function renderCompare(){
   $('#clearCmp').onclick = ()=>{ state.compare = []; render(); };
 }
 
-// --- MOUNT --------------------------------------------------------------
+function bindFilters(){
+  document.querySelectorAll('#categorySeg [data-cat]').forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelectorAll('#categorySeg button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      state.category = b.getAttribute('data-cat');
+      render();
+    };
+  });
+  $('#q').addEventListener('input', e=>{ state.q = e.target.value; render(); });
+}
+
 function render(){ renderCards(); renderCompare(); }
 
 document.addEventListener('DOMContentLoaded', ()=>{ bindFilters(); render(); });
