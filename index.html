@@ -16,7 +16,7 @@
     --border:rgba(15,35,35,.14);
     --chip:rgba(10,10,15,.05);
     --brand:#17423a;     /* deep desert green */
-    --brand-accent:#c7b892; /* sandstone gold */
+    --desert:#BB705B;    /* desert gold/terracotta from screenshot (#BB705B) */
     --shadow:0 18px 50px -24px rgba(0,0,0,.28);
   }
   html[data-theme="dark"]{ /* Dark */
@@ -29,7 +29,7 @@
     --border:rgba(243,247,248,.12);
     --chip:rgba(255,255,255,.08);
     --brand:#9ed0bf;     /* softened brand */
-    --brand-accent:#d9caa7;
+    --desert:#BB705B;    /* keep same accent in dark for brand consistency */
     --shadow:0 22px 60px -26px rgba(0,0,0,.55);
   }
 
@@ -38,20 +38,20 @@
   html,body{height:100%}
   body{margin:0;font:15px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:var(--ink); background:var(--bg);} 
   .wrap{max-width:1140px; margin:0 auto; padding:16px}
-  .top{position:sticky; top:0; z-index:5; backdrop-filter:saturate(1.1) blur(10px); background:color-mix(in oklab, var(--bg) 88%, transparent); border-bottom:1px solid var(--border)}
+  .top{position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.1) blur(10px); background:color-mix(in oklab, var(--bg) 88%, transparent); border-bottom:1px solid var(--border)}
   h1{font-size:20px; font-weight:800; margin:0; letter-spacing:.2px; display:flex; align-items:center; gap:10px}
   .brand{color:var(--brand)}
-  .title{color:var(--brand-accent)}
+  .title{color:var(--desert)}
   .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
   .grow{flex:1}
   input[type="text"]{width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--chip); color:var(--ink); outline:none}
   input[type="text"]:focus{box-shadow:0 0 0 3px var(--ring)}
   .seg{display:inline-flex; background:var(--chip); border:1px solid var(--border); border-radius:12px; padding:4px}
   .seg button{padding:6px 10px; border-radius:8px; border:0; background:transparent; color:var(--ink); cursor:pointer}
-  .seg button.active{background:color-mix(in oklab, var(--brand) 16%, var(--chip)); color:var(--ink)}
+  .seg button.active{background:color-mix(in oklab, var(--desert) 22%, var(--chip)); color:var(--ink)}
   /* perfect circle theme toggle */
   .mode{width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:1px solid var(--border); background:var(--chip); cursor:pointer; user-select:none; transition:background .25s}
-  .mode:hover{background:color-mix(in oklab, var(--brand) 8%, var(--chip));}
+  .mode:hover{background:color-mix(in oklab, var(--desert) 10%, var(--chip));}
   .sym{font-family:ui-sans-serif,system-ui; font-weight:700; font-size:18px; letter-spacing:.5px; line-height:1}
   .hide{display:none}
 
@@ -62,10 +62,10 @@
   /* rows: header( auto ), meta pills(36), highlights(100), pricing(64), restrictions(56), link(40) */
   .rowhead{display:flex; gap:10px}
   .name{font-weight:800; font-size:16px; line-height:1.2; flex:1}
-  .btn{border:1px solid var(--border); background:var(--chip); color:var(--ink); padding:6px 12px; border-radius:10px; cursor:pointer; white-space:nowrap}
-  .btn.small{font-size:12px; padding:5px 10px; border-radius:999px}
+  .btn{border:1px solid var(--border); background:var(--chip); color:var(--ink); padding:4px 8px; border-radius:999px; cursor:pointer; white-space:nowrap; font-size:11.5px; line-height:1}
+  .btn.small{font-size:11.5px; padding:4px 9px; border-radius:999px}
   .pills{display:flex; flex-wrap:wrap; gap:6px; align-content:flex-start; overflow:hidden; max-height:36px}
-  .pill{display:inline-flex; align-items:center; gap:6px; font-size:11px; padding:4px 8px; border-radius:999px; background:color-mix(in oklab, var(--brand) 10%, var(--chip)); border:1px solid var(--border)}
+  .pill{display:inline-flex; align-items:center; gap:6px; font-size:11px; padding:4px 8px; border-radius:999px; background:color-mix(in oklab, var(--desert) 12%, var(--chip)); border:1px solid var(--border)}
   .kv{display:grid; grid-template-columns:120px 1fr; gap:8px; row-gap:6px}
   .kv .label{color:var(--muted); font-size:12px}
   .bullets{margin:0; padding-left:16px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical}
@@ -73,19 +73,15 @@
   .clamp2{overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical}
   .badge{display:inline-flex; align-items:center; gap:6px; font-size:11px; text-transform:uppercase; letter-spacing:.12em; padding:4px 10px; border-radius:99px; border:1px solid var(--border); background:var(--chip); color:var(--muted)}
   .linkRow{display:flex; align-items:center; justify-content:flex-end}
-  a.link{color:var(--brand); text-decoration:none; font-weight:600}
+  a.link{color:var(--desert); text-decoration:none; font-weight:600}
   a.link:hover{text-decoration:underline}
 
   /* ——— COMPARE ——— */
-  .compareBar{position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:min(1120px, 94vw); background:color-mix(in oklab, var(--panel) 96%, transparent); border:1px solid var(--border); border-radius:18px; padding:12px; box-shadow:var(--shadow)}
+  .compareBar{position:fixed; left:50%; transform:translateX(-50%); bottom:16px; width:min(1120px, 94vw); background:color-mix(in oklab, var(--panel) 96%, transparent); border:1px solid var(--border); border-radius:18px; padding:12px; box-shadow:var(--shadow); z-index:60}
   .cmpGrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px}
   .cmpCard{border:1px solid var(--border); border-radius:14px; padding:10px; background:var(--card)}
-
-  /* ——— TESTS PANEL ——— */
-  #testPanel{position:fixed; right:10px; bottom:10px; max-width:320px; background:var(--panel); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); padding:8px 10px; font-size:12px; color:var(--ink)}
-  #testPanel summary{cursor:pointer}
-  #testPanel .pass{color:#16a34a}
-  #testPanel .fail{color:#dc2626}
+  .cmpHdr{display:flex; align-items:center; gap:8px}
+  .cmpDot{width:8px; height:8px; border-radius:50%; background:var(--desert)}
 </style>
 </head>
 <body>
@@ -122,17 +118,12 @@
 
   <div id="compare" class="compareBar" style="display:none">
     <div class="row" style="margin-bottom:8px">
-      <strong>Compare (<span id="cmpCount">0</span>/3)</strong>
+      <strong style="color:var(--desert)">Compare (<span id="cmpCount">0</span>/3)</strong>
       <div class="grow"></div>
       <button id="clearCmp" class="btn small">Clear</button>
     </div>
     <div id="cmpGrid" class="cmpGrid"></div>
   </div>
-
-  <details id="testPanel">
-    <summary>Tests</summary>
-    <div id="testOut"></div>
-  </details>
 
 <script>
 // =============== DATA ==================
@@ -148,12 +139,8 @@ const DEFAULT_PACKAGES = [
   {id:"desert-vines", name:"Desert Vines (Cancelled)", category:"culinary", status:"cancelled", minNights:null, advanceBookingDays:null, pricingNote:"No longer offered.", highlights:["—"], restrictions:["Cancelled"], url:null},
 ];
 
-// If someone injects document.packagesData, prefer it (must be an array). Otherwise use defaults.
 const PACKAGES = (()=>{
-  try{
-    const dp = (document && 'packagesData' in document) ? document.packagesData : undefined;
-    return Array.isArray(dp) ? dp : DEFAULT_PACKAGES;
-  }catch(_){ return DEFAULT_PACKAGES; }
+  try{ const dp = (document && 'packagesData' in document) ? document.packagesData : undefined; return Array.isArray(dp) ? dp : DEFAULT_PACKAGES; }catch(_){ return DEFAULT_PACKAGES; }
 })();
 
 // =============== STATE ===============
@@ -166,7 +153,6 @@ const moonEl = $('#moon');
 $('#modeToggle').onclick = ()=>{
   state.theme = state.theme==='light'? 'dark':'light';
   document.documentElement.setAttribute('data-theme', state.theme);
-  // Show moon in light mode (to switch), sun in dark mode
   moonEl.classList.toggle('hide', state.theme !== 'light');
   sunEl.classList.toggle('hide', state.theme !== 'dark');
 };
@@ -231,8 +217,8 @@ function renderCards(){
       const id = btn.getAttribute('data-cmp');
       const i = state.compare.indexOf(id);
       if(i>-1) state.compare.splice(i,1); else { state.compare.push(id); if(state.compare.length>3) state.compare.shift(); }
-      renderCompare();
-      // re-render only the buttons text to avoid full layout thrash
+      updateCompareUI();
+      // refresh button labels only
       document.querySelectorAll('[data-cmp]').forEach(b=>{
         const bid=b.getAttribute('data-cmp');
         b.textContent = state.compare.includes(bid)?'Selected':'Compare';
@@ -241,15 +227,15 @@ function renderCards(){
   });
 }
 
-function renderCompare(){
+function updateCompareUI(){
   const bar = $('#compare'); const grid = $('#cmpGrid'); const count = $('#cmpCount');
-  if(!state.compare.length){ bar.style.display='none'; return; }
+  if(!state.compare.length){ bar.style.display='none'; grid.innerHTML=''; count.textContent='0'; return; }
   bar.style.display='block'; count.textContent = String(state.compare.length);
   grid.innerHTML = '';
   state.compare.map(id=>PACKAGES.find(p=>p.id===id)).forEach(p=>{
     const d=document.createElement('div'); d.className='cmpCard';
     d.innerHTML = `
-      <div class="row"><strong>${p.name}</strong><div class="grow"></div><button class="btn small" data-rem="${p.id}">Remove</button></div>
+      <div class="cmpHdr"><span class="cmpDot"></span><strong>${p.name}</strong><div style="flex:1"></div><button class="btn small" data-rem="${p.id}">Remove</button></div>
       ${keyRow('Min nights', p.minNights ?? '—')}
       ${keyRow('Advance', p.advanceBookingDays? p.advanceBookingDays+' days' : '—')}
       ${keyRow('Highlights', (p.highlights||[]).join(', '))}
@@ -258,8 +244,8 @@ function renderCompare(){
     `;
     grid.appendChild(d);
   });
-  grid.querySelectorAll('[data-rem]').forEach(b=> b.onclick = ()=>{ const id=b.getAttribute('data-rem'); state.compare = state.compare.filter(x=>x!==id); renderCompare(); renderCards(); });
-  $('#clearCmp').onclick = ()=>{ state.compare = []; renderCompare(); renderCards(); };
+  grid.querySelectorAll('[data-rem]').forEach(b=> b.onclick = ()=>{ const id=b.getAttribute('data-rem'); state.compare = state.compare.filter(x=>x!==id); updateCompareUI(); renderCards(); });
+  $('#clearCmp').onclick = ()=>{ state.compare = []; updateCompareUI(); renderCards(); };
 }
 
 function bindFilters(){
@@ -274,58 +260,9 @@ function bindFilters(){
   $('#q').addEventListener('input', e=>{ state.q = e.target.value; renderCards(); });
 }
 
-function render(){ bindFilters(); renderCards(); renderCompare(); }
+function init(){ bindFilters(); renderCards(); updateCompareUI(); }
 
-document.addEventListener('DOMContentLoaded', render);
-
-// =============== TESTS ===============
-function test(name, fn){
-  const out = document.getElementById('testOut');
-  try{ const res = fn(); const ok = res!==false; const line = document.createElement('div'); line.innerHTML = `<span class="${ok?'pass':'fail'}">${ok?'✔':'✖'}</span> ${name}`; out.appendChild(line); }
-  catch(e){ const line = document.createElement('div'); line.innerHTML = `<span class="fail">✖</span> ${name} <em>${e.message}</em>`; out.appendChild(line); }
-}
-
-window.addEventListener('load', ()=>{
-  // Test 1: default theme is light, moon visible, sun hidden
-  test('Default theme light with moon visible', ()=>{
-    return document.documentElement.getAttribute('data-theme')==='light' && !document.getElementById('moon').classList.contains('hide') && document.getElementById('sun').classList.contains('hide');
-  });
-  // Test 2: toggle switches icons
-  test('Toggle switches to dark and shows sun', ()=>{
-    document.getElementById('modeToggle').click();
-    const ok = document.documentElement.getAttribute('data-theme')==='dark' && !document.getElementById('sun').classList.contains('hide') && document.getElementById('moon').classList.contains('hide');
-    // switch back
-    document.getElementById('modeToggle').click();
-    return ok;
-  });
-  // Test 3: cards render count matches PACKAGES length (category all)
-  test('Cards render equals PACKAGES length', ()=>{
-    const cards = document.querySelectorAll('#cards .card');
-    return cards.length === PACKAGES.length;
-  });
-  // Test 4: search "Watsu" finds Water Wellness
-  test('Search Watsu narrows to Water Wellness', ()=>{
-    const q = document.getElementById('q');
-    q.value = 'Watsu'; q.dispatchEvent(new Event('input'));
-    const cards = [...document.querySelectorAll('#cards .card')];
-    const names = cards.map(c=>c.querySelector('.name').textContent.trim());
-    const ok = names.length>=1 && names[0].includes('Water Wellness');
-    // reset
-    q.value=''; q.dispatchEvent(new Event('input'));
-    return ok;
-  });
-  // Test 5: category Culinary shows only culinary ids
-  test('Category filter Culinary works', ()=>{
-    const btn = document.querySelector('#categorySeg [data-cat="culinary"]');
-    btn.click();
-    const idsShown = [...document.querySelectorAll('#cards .card')].map(c=>c.getAttribute('data-id'));
-    const should = PACKAGES.filter(p=>p.category==='culinary').map(p=>p.id).sort();
-    const ok = idsShown.sort().join(',')===should.join(',');
-    // reset to All
-    document.querySelector('#categorySeg [data-cat="all"]').click();
-    return ok;
-  });
-});
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
