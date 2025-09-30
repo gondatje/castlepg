@@ -41,7 +41,7 @@
   .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:18px; padding:var(--space-xl) 0 var(--space-xl)}
 
   /* Card (minimal face + sticky footer) */
-  .card{border:1px solid var(--border); background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; min-height:420px}
+  .card{border:1px solid var(--border); background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; min-height:430px}
   .cardHdr{padding:16px var(--space-lg) 8px; display:flex; gap:10px; align-items:center}
   .name{font-weight:800; font-size:18px; line-height:1.2; flex:1}
   .pill{font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid var(--border); background:var(--chip); color:var(--muted)}
@@ -58,21 +58,22 @@
   .btn.primary{background:color-mix(in oklab, var(--accent) 20%, var(--chip)); border-color:color-mix(in oklab, var(--accent) 40%, var(--border));}
   .btn:disabled{opacity:.55; cursor:not-allowed}
 
-  /* Sheet (tailored details) */
+  /* Detail sheet — redesigned (Apple-y) */
   .overlay{position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; z-index:100}
-  .sheet{width:min(900px, 94vw); max-height:86vh; overflow:auto; background:var(--panel); color:var(--ink); border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow)}
-  .sheetHdr{position:sticky; top:0; background:var(--panel); border-bottom:1px solid var(--border); padding:16px var(--space-lg); display:flex; gap:10px; align-items:center}
-  .sheetTitle{font-size:18px; font-weight:800}
-  .sheetBody{padding:var(--space-lg); display:grid; gap:18px}
+  .sheet{width:min(940px, 94vw); max-height:86vh; overflow:auto; background:var(--panel); color:var(--ink); border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow)}
+  .sheetHdr{position:sticky; top:0; background:var(--panel); border-bottom:1px solid var(--border); padding:18px var(--space-lg); display:flex; gap:10px; align-items:center}
+  .sheetTitle{font-size:20px; font-weight:800}
+  .sheetMeta{padding:10px var(--space-lg); display:flex; gap:8px; flex-wrap:wrap}
+  .meta{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:var(--chip)}
+  .sheetBody{padding:var(--space-lg); display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+  .block{border:1px solid var(--border); background:color-mix(in oklab, var(--chip) 70%, transparent); border-radius:16px; padding:14px 14px}
+  .block h3{margin:0 0 8px 0; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent)}
+  .block ul{margin:0; padding-left:18px; line-height:1.55}
+  .block li{margin:6px 0}
   .kv{display:grid; grid-template-columns:160px 1fr; gap:8px; row-gap:6px}
   .kv .label{color:var(--muted); font-size:13px}
-  .divider{height:1px; background:var(--border); margin:2px 0}
-  .subtle{color:var(--muted)}
+  .sheetFtr{position:sticky; bottom:0; background:var(--panel); border-top:1px solid var(--border); padding:12px var(--space-lg); display:flex; gap:10px}
 
-  /* Modal (for super-long verbatim like itineraries if needed) */
-  .modal{width:min(820px, 92vw); max-height:82vh; overflow:auto; background:var(--panel); color:var(--ink); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); padding:18px}
-  .modal h2{margin:0 0 8px 0}
-  .modal pre{white-space:pre-wrap; font:15px ui-sans-serif,system-ui; line-height:1.5}
 </style>
 </head>
 <body>
@@ -96,25 +97,16 @@
     <div id="grid" class="grid"></div>
   </div>
 
-  <!-- Tailored detail sheet -->
+  <!-- Redesigned detail sheet -->
   <div class="overlay" id="sheetOverlay" role="dialog" aria-modal="true">
     <div class="sheet">
       <div class="sheetHdr">
         <div class="sheetTitle grow" id="sheetTitle"></div>
         <button id="sheetClose" class="btn">Close</button>
       </div>
+      <div class="sheetMeta" id="sheetMeta"></div>
       <div class="sheetBody" id="sheetBody"></div>
-    </div>
-  </div>
-
-  <!-- Optional modal for extra-long verbatim blocks (kept for flexibility) -->
-  <div class="overlay" id="modalOverlay" role="dialog" aria-modal="true">
-    <div class="modal">
-      <div class="row" style="margin-bottom:8px">
-        <h2 id="modalTitle" class="grow"></h2>
-        <button id="modalClose" class="btn">Close</button>
-      </div>
-      <pre id="modalBody"></pre>
+      <div class="sheetFtr" id="sheetFtr"></div>
     </div>
   </div>
 
@@ -128,59 +120,47 @@ $('#modeToggle').onclick = ()=>{
   $('#sun').classList.toggle('hide', state.theme !== 'dark');
 };
 
-// Data (universal face + tailored details)
+// Data (universal face + tailored details; no placeholder dashes inside details)
 const PKG = [
   { id:'iw', cat:'Wellness', name:'Intentional Wellness', status:'active', url:'https://www.castlehotsprings.com/intentional-wellness-package/',
-    includeFace:[
-      'Private Wellness Sessions — 2 hours for solo traveler or 4 hours for two travelers [pr]',
-      '$255 spa credit [pp]'
-    ],
+    includeFace:[ 'Private Wellness Sessions — 2 hours for solo traveler or 4 hours for two travelers [pr]', '$255 spa credit [pp]' ],
     chips:['3-night minimum','14+ day advance'],
-    detailSections:[
-      { t:'What’s Included?', kind:'list', items:[
-        'Private Wellness Sessions — 2 hours for solo traveler or 4 hours for two travelers [pr]',
-        '$255 spa credit [pp]'
-      ]},
-      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'3', 'Advance':'14+ days', 'Dates/Windows':'—', 'Eligibility':'—' } }
+    essentials:{ minNights:'3', advance:'14+ days' },
+    sections:[
+      { t:'What’s Included?', kind:'list', items:[ 'Private Wellness Sessions — 2 hours for solo traveler or 4 hours for two travelers [pr]', '$255 spa credit [pp]' ]}
     ]
   },
   { id:'ww', cat:'Wellness', name:'Water Wellness (Wellness Through Water)', status:'active', url:'https://www.castlehotsprings.com/promotions/wellness-through-water-package/',
     includeFace:[ '60-minute Zen Soaking Secrets [pr]', '60-minute Watsu [pp]' ],
     chips:['3-night minimum'],
-    detailSections:[
-      { t:'What’s Included?', kind:'list', items:[ '60-minute Zen Soaking Secrets [pr]', '60-minute Watsu [pp]' ]},
-      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'3', 'Advance':'—', 'Dates/Windows':'—', 'Eligibility':'—' } }
-    ]
+    essentials:{ minNights:'3' },
+    sections:[ { t:'What’s Included?', kind:'list', items:[ '60-minute Zen Soaking Secrets [pr]', '60-minute Watsu [pp]' ]} ]
   },
   { id:'ae', cat:'Adventure', name:'Adventure Experience', status:'active', url:'https://www.castlehotsprings.com/promotions/castle-adventure-package/',
     includeFace:[ 'Scenic Desert E-Bike Tour [pp]', 'Crater Canyon Exploration [pp]' ],
     chips:['3-night minimum'],
-    detailSections:[
-      { t:'What’s Included?', kind:'list', items:[ 'Scenic Desert E-Bike Tour [pp]', 'Crater Canyon Exploration [pp]' ]},
-      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'3', 'Advance':'—', 'Dates/Windows':'—', 'Eligibility':'—' } }
-    ]
+    essentials:{ minNights:'3' },
+    sections:[ { t:'What’s Included?', kind:'list', items:[ 'Scenic Desert E-Bike Tour [pp]', 'Crater Canyon Exploration [pp]' ]} ]
   },
   { id:'ss', cat:'Wellness', name:'Soak & Slumber', status:'active', url:'https://www.castlehotsprings.com/promotions/soak-and-slumber-package/',
     includeFace:[ '$255 spa credit [pp]', "60-minute Private Nature's Rhythm Hike [pr]", '60-minute Divine Slumber Session [pr]' ],
     chips:['3-night minimum'],
-    detailSections:[
+    essentials:{ minNights:'3' },
+    sections:[
       { t:'What’s Included?', kind:'list', items:[ '$255 spa credit [pp]', "60-minute Private Nature's Rhythm Hike [pr]", '60-minute Divine Slumber Session [pr]', 'Sleep Kits (placed in room at arrival)' ]},
-      { t:'Kit Contents', kind:'list', items:[ 'In Room Kit [pr]: Dream Body Butter, Brochure/handout, Bath Soak, Tea', 'Personal Kit [pp]: Pillow Sachet w/ CHS Herbs, weighted cooling eye mask, copper bracelets, chocolate (one chocolate per person per night)' ]},
-      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'3', 'Advance':'—', 'Dates/Windows':'—', 'Eligibility':'—' } }
+      { t:'Kit Contents', kind:'list', items:[ 'In Room Kit [pr]: Dream Body Butter, Brochure/handout, Bath Soak, Tea', 'Personal Kit [pp]: Pillow Sachet w/ CHS Herbs, weighted cooling eye mask, copper bracelets, chocolate (one chocolate per person per night)' ]}
     ]
   },
   { id:'sor', cat:'Wellness', name:'Sonoran Oasis Renewal', status:'active', url:'https://www.castlehotsprings.com/promotions/desert-spa-package/',
     includeFace:[ '$50 per person Resort Credit [pp]', '120-minute Sonoran Desert Transformation [pp]', 'Turquoise Sage Travel Kit [pp]' ],
     chips:['3-night minimum'],
-    detailSections:[
-      { t:'What’s Included?', kind:'list', items:[ '$50 per person Resort Credit (This is in addition to the $25 per person beverage credit)', 'One 120-minute Sonoran Desert Transformation per person', 'Turquoise Sage Travel Kit (One Per Person)' ]},
-      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'3', 'Advance':'—', 'Dates/Windows':'—', 'Eligibility':'—' } }
-    ]
+    essentials:{ minNights:'3' },
+    sections:[ { t:'What’s Included?', kind:'list', items:[ '$50 per person Resort Credit (This is in addition to the $25 per person beverage credit)', 'One 120-minute Sonoran Desert Transformation per person', 'Turquoise Sage Travel Kit (One Per Person)' ]} ]
   },
   { id:'see', cat:'Culinary & Wine', name:'Sonoran Epicurean Escape', status:'active', url:'https://www.castlehotsprings.com/stay/events/sonoran-epicurean-escape/',
     includeFace:[ 'Multi-day culinary program with classes, pairings, and hosted dinners' ],
     chips:['2- or 4-night options'],
-    detailSections:[
+    sections:[
       { t:'What’s Included?', kind:'list', items:[ 'Multi-day culinary program with classes, pairings, and hosted dinners' ]},
       { t:'Dates Offered', kind:'list', items:[ 'November 30–December 4 (4 nights) • 2-night options: Nov 30–Dec 2 or Dec 2–Dec 4', 'December 14–December 18 (4 nights) • 2-night options: Dec 14–Dec 16 or Dec 16–Dec 18' ]},
       { t:'Itinerary', kind:'verbatim', text:`Day 1 (November 30th, December 14th) 
@@ -205,32 +185,34 @@ Day 4 (December 3rd, December 17th):
   { id:'vv', cat:'Culinary & Wine', name:'Vines & Vistas (Sedona Helicopter + D.A. Ranch)', status:'active', url:'https://www.castlehotsprings.com/promotions/wine-tour/',
     includeFace:[ 'Helicopter tour of Sedona & AZ wine country (≈3 hr, CHS → CHS) [pr]', 'Exclusive D.A. Ranch Estate Vineyard Tour & Wine Tasting [pr]', '$50 Resort Credit [pp]' ],
     chips:['4-night minimum','21-day advance'],
-    detailSections:[
+    essentials:{ minNights:'4', advance:'21 days' },
+    sections:[
       { t:'What’s Included?', kind:'list', items:[ 'Helicopter Tour of Sedona & Surrounding Area including Arizona Wine Country (From Heli P/U at CHS to Heli Landing back at CHS = approx. 3 hour experience) [pr]', 'Exclusive D.A. Ranch Estate Vineyward Tour & Wine Tasting [pr]', '$50 Resort Credit Per Person (this is in addition to the $25pp per night Beverage Credit)' ]},
       { t:'Add‑Ons', kind:'list', items:[ 'Gift set $150/pp (reserve wine, D.A. Ranch olive oil, branded opener, Gayle’s Chocolates)' ]},
       { t:'Booking Notes', kind:'list', items:[ 'PA is NOT involved in booking or heli setup. Coordinated with CoyAnne.' ]},
-      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'4', 'Advance':'21 days', 'Dates/Windows':'—', 'Eligibility':'—' } }
+      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'4', 'Advance':'21 days' } }
     ]
   },
   { id:'ll', cat:'Residents', name:'Local Legends (AZ Residents)', status:'active', url:'https://www.castlehotsprings.com/promotions/local-legends-offer/',
     includeFace:[ '$150 nightly resort credit PER ROOM' ],
     chips:['2-night minimum','AZ ID required'],
-    detailSections:[
+    essentials:{ minNights:'2', eligibility:'Valid AZ photo ID at check in' },
+    sections:[
       { t:'What’s Included?', kind:'list', items:[ '$150 nightly resort credit PER ROOM' ]},
       { t:'Credit Use', kind:'list', items:[ 'Spa treatments, activities, adventures (not redeemable at Harvest, Bar 1896, the boutique, amenities or transportation)' ]},
       { t:'Quick Stay Reference', kind:'list', items:[ '2 nights → $300', '3 nights → $450', '4 nights → $600', '5 nights → $750' ]},
-      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'2', 'Advance':'—', 'Dates/Windows':'Aug 28–Sep 30 (2025); May 21–Jul 5 (2026); Aug 27–Sep 30 (2026)', 'Eligibility':'Valid AZ photo ID at check in' } }
+      { t:'Essentials', kind:'kv', kv:{ 'Min Nights':'2', 'Eligibility':'Valid AZ photo ID at check in' } }
     ]
   },
   { id:'dv', cat:'Culinary & Wine', name:'Desert Vines (Cancelled)', status:'cancelled', url:null,
     includeFace:[ '—' ], chips:['—'],
-    detailSections:[ { t:'Status', kind:'list', items:['Cancelled'] }, { t:'What’s Included?', kind:'list', items:['—'] } ]
+    sections:[ { t:'Status', kind:'list', items:['This package is currently cancelled.'] } ]
   }
 ];
 
 function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; }
 function chipRow(chips){ if(!chips||!chips.length) return ''; return `<div class="chips">${chips.map(c=>`<span class="chip">${c}</span>`).join('')}</div>`; }
-function list(items, clamp){ const arr=(items||[]); const lis=arr.map(x=>`<li>${x}</li>`).join(''); return `<ul class="bullets" style="${clamp?'-webkit-line-clamp:'+clamp:'-webkit-line-clamp:unset'}">${lis}</ul>`; }
+function list(items, clamp){ const arr=(items||[]).filter(x=>x && x!== '—'); const lis=arr.map(x=>`<li>${x}</li>`).join(''); if(!lis) return '<ul class="bullets"></ul>'; return `<ul class="bullets" style="${clamp?'-webkit-line-clamp:'+clamp:'-webkit-line-clamp:unset'}">${lis}</ul>`; }
 
 function renderGrid(){
   const root = $('#grid'); root.innerHTML='';
@@ -240,7 +222,8 @@ function renderGrid(){
   });
   data.forEach(p=>{
     const cancelled = p.status==='cancelled';
-    const card = el(`<div class="card" style="opacity:${cancelled ? 0.8 : 1}">
+    const opacityVal = cancelled ? 0.85 : 1;
+    const card = el(`<div class="card" style="opacity:${opacityVal}">
       <div class="cardHdr">
         <div class="name">${p.name}</div>
         ${cancelled? '<span class="pill">Cancelled</span>': `<span class="pill subtle">${p.cat}</span>`}
@@ -259,37 +242,50 @@ function renderGrid(){
   });
 }
 
+function buildMeta(meta){
+  const chips=[]; if(!meta) return chips;
+  if(meta.minNights) chips.push(`Min Nights: ${meta.minNights}`);
+  if(meta.advance) chips.push(`Advance: ${meta.advance}`);
+  if(meta.dates) chips.push(`Dates: ${meta.dates}`);
+  if(meta.eligibility) chips.push(`Eligibility: ${meta.eligibility}`);
+  return chips;
+}
+
 function openSheet(pkg){
   $('#sheetTitle').textContent = pkg.name;
+  const metaEl = $('#sheetMeta'); metaEl.innerHTML='';
   const body = $('#sheetBody'); body.innerHTML='';
-  // Category / chips row (compact)
-  const head = el(`<div class="row">${pkg.status==='cancelled'? '<span class="pill">Cancelled</span>': `<span class="pill subtle">${pkg.cat}</span>`}${pkg.chips&&pkg.chips.length? '<div class="grow"></div>'+pkg.chips.map(c=>`<span class=\"chip\">${c}</span>`).join(' '): ''}</div>`);
-  body.appendChild(head);
+  const ftr = $('#sheetFtr'); ftr.innerHTML='';
 
-  // Tailored sections
-  (pkg.detailSections||[]).forEach(sec=>{
+  // Meta chips (computed from essentials + authored chips)
+  const metaChips = [...(pkg.chips||[]), ...buildMeta(pkg.essentials||{})].filter(Boolean);
+  metaChips.forEach(c=> metaEl.appendChild(el(`<span class="meta">${c}</span>`)));
+
+  // Tailored section blocks – only render sections with real content
+  (pkg.sections||[]).forEach(sec=>{
     if(sec.kind==='list'){
-      const s = el(`<div><h3>${sec.t}</h3>${list(sec.items)}</div>`);
-      body.appendChild(s);
+      const items=(sec.items||[]).filter(x=>x && x!=='—');
+      if(!items.length) return; // skip empty
+      const block = el(`<div class="block"><h3>${sec.t}</h3><ul></ul></div>`);
+      const ul = block.querySelector('ul'); items.forEach(x=> ul.appendChild(el(`<li>${x}</li>`)));
+      body.appendChild(block);
     } else if(sec.kind==='kv'){
-      const kvWrap = el(`<div><h3>${sec.t}</h3><div class="kv"></div></div>`);
-      const kvEl = kvWrap.querySelector('.kv');
-      Object.entries(sec.kv||{}).forEach(([k,v])=>{ kvEl.appendChild(el(`<div class="label">${k}</div>`)); kvEl.appendChild(el(`<div>${v||'—'}</div>`)); });
-      body.appendChild(kvWrap);
+      const pairs = Object.entries(sec.kv||{}).filter(([k,v])=> v && v!=='—');
+      if(!pairs.length) return;
+      const block = el(`<div class="block"><h3>${sec.t}</h3><div class="kv"></div></div>`);
+      const kv = block.querySelector('.kv');
+      pairs.forEach(([k,v])=>{ kv.appendChild(el(`<div class="label">${k}</div>`)); kv.appendChild(el(`<div>${v}</div>`)); });
+      body.appendChild(block);
     } else if(sec.kind==='verbatim'){
-      // Show verbatim inline (no modal) as requested
-      const v = el(`<div><h3>${sec.t}</h3><pre style="white-space:pre-wrap; font:15px ui-sans-serif,system-ui; line-height:1.5"></pre></div>`);
-      v.querySelector('pre').textContent = sec.text || '';
-      body.appendChild(v);
+      const text = (sec.text||'').trim(); if(!text) return;
+      const block = el(`<div class="block"><h3>${sec.t}</h3><pre style="white-space:pre-wrap; font:15px ui-sans-serif,system-ui; line-height:1.5"></pre></div>`);
+      block.querySelector('pre').textContent = text; body.appendChild(block);
     }
-    body.appendChild(el('<div class="divider"></div>'));
   });
 
-  // Actions row
-  const actions = el(`<div class="row" style="gap:10px"><div class="grow"></div></div>`);
-  if(pkg.url){ const a=el('<button class="btn">Explore Online</button>'); a.onclick=()=>window.open(pkg.url,'_blank','noreferrer'); actions.appendChild(a); }
-  const close=el('<button class="btn primary">Done</button>'); close.onclick=()=>($('#sheetOverlay').style.display='none'); actions.appendChild(close);
-  body.appendChild(actions);
+  // Sticky footer actions
+  if(pkg.url){ const a=el('<button class="btn">Explore Online</button>'); a.onclick=()=>window.open(pkg.url,'_blank','noreferrer'); ftr.appendChild(a); }
+  const close=el('<button class="btn primary">Done</button>'); close.onclick=()=>($('#sheetOverlay').style.display='none'); ftr.appendChild(close);
 
   $('#sheetOverlay').style.display='flex';
 }
@@ -302,9 +298,7 @@ document.addEventListener('click', (e)=>{
   if(linkId){ const pkg=PKG.find(p=>p.id===linkId); if(pkg && pkg.url) window.open(pkg.url,'_blank','noreferrer'); }
 });
 $('#sheetClose').onclick = ()=> $('#sheetOverlay').style.display='none';
-$('#modalClose').onclick = ()=> $('#modalOverlay').style.display='none';
 $('#sheetOverlay').addEventListener('click', (e)=>{ if(e.target.id==='sheetOverlay') e.currentTarget.style.display='none'; });
-$('#modalOverlay').addEventListener('click', (e)=>{ if(e.target.id==='modalOverlay') e.currentTarget.style.display='none'; });
 
 $('#q').addEventListener('input', e=>{ state.q=e.target.value; renderGrid(); });
 
